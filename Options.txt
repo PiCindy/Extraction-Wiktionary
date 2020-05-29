@@ -1,0 +1,16 @@
+Liste d'options nécessaires au programme d'interrogation de Wiktionary :
+
+cf https://commons.apache.org/proper/commons-cli/apidocs/org/apache/commons/cli/Option.Builder.html pour créer option
+
+- "mot" : Entrer le mot recherché
+	> Argument : mot recherché (Nécessaire)
+
+- "info" : Entrer l'information cherchée
+	> Arguments : Un ou plusieurs (Au moins un nécessaire)
+		- "prononciation"
+		- "catégorie"
+		- "traduction"
+		- "synonyme"
+		- "antonyme"
+
+
