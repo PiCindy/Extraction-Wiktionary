@@ -1,23 +1,11 @@
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.TransformerException;
-
-import wiktionary_extractor.Page;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import java.io.Serializable;
 
 public class Mot implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String ecriture;
 	private String prononciation;
 	private HashMap<String, String> traductions;
@@ -34,24 +22,39 @@ public class Mot implements Serializable {
 		this.antonymes = antonymes;
 	}
 	
+	public void affMot() {
+		System.out.println(ecriture);
+	}
+	
 	public void affPrononciation() {
-		System.out.println(prononciation);
+		System.out.println("Prononciation : " + prononciation);
 	}
 	
 	public void affCategories() {
-		System.out.println(categories);
+		System.out.println("Catégories morpho-syntaxiques : " + categories);
 	}
 	
 	public void affSynonymes() {
-		System.out.println(synonymes);
+		System.out.println("Synonymes : " + synonymes);
 	}
 	
 	public void affAntonymes() {
-		System.out.println(antonymes);
+		System.out.println("Antonymes : " + antonymes);
 	}
 	
-	public void affTraductions() {
-		System.out.println(traductions);
+	public void affTraductions(String[] langues) {
+		System.out.print("Traductions : ");
+		if (langues == null || langues.length == 0) {
+			System.out.println(traductions);
+		}
+		else {
+			for (String l : langues) {
+				if (traductions.containsKey(l)) {
+					System.out.print(l + "=" + traductions.get(l) + " ");
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 }

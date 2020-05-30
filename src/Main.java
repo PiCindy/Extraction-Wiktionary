@@ -1,6 +1,10 @@
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+
 import org.apache.commons.cli.*;
 
-public class Test {
+public class Main {
 
 	/***
 	 * Paramètre les options nécessaires au programme
@@ -25,10 +29,9 @@ public class Test {
 		options.addOption(info);
 		
 		Option langues = Option.builder()
-				.longOpt("langues")
+				.longOpt("langue")
 				.desc("Langues recherchées")
 				.hasArgs()
-				.required()
 				.build();
 		options.addOption(langues);
 		
@@ -36,35 +39,35 @@ public class Test {
 	}
 		
 
-	public static void main (String[] args) throws ParseException {
+	public static void main (String[] args) throws ParseException, IOException, ClassNotFoundException {
 		Options options = configParameters();
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine cmd = parser.parse(options, args);
-			String mot = cmd.getOptionValue("mot").toLowerCase();
+			String title = cmd.getOptionValue("mot").toLowerCase();
+			String filemot = "donnees/" + title + ".pkl";
+			ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(filemot));
+			Mot mot = (Mot)ois.readObject();
+			ois.close();
 			String[] infos = cmd.getOptionValues("info");
+			mot.affMot();
 			for (String info : infos) {
 				switch(info) {
 					case "prononciation" :
-						//afficherPrononciation(mot);
-						System.out.println("Prononciation du mot " + mot);
+						mot.affPrononciation();
 						break;
 					case "categorie" :
-						//afficherCategorie(mot);
-						System.out.println("Catégorie du mot " + mot);
+						mot.affCategories();
 						break;
 					case "traduction" :
 						String[] langues = cmd.getOptionValues("langue");
-						//afficherTraduction(mot, langues);
-						System.out.println("Traduction du mot " + mot + " dans les langues " + langues);
+						mot.affTraductions(langues);
 						break;
 					case "synonyme" :
-						//afficherSynonyme(mot);
-						System.out.println("Synonyme du mot " + mot);
+						mot.affSynonymes();
 						break;
 					case "antonyme" :
-						//afficherAntonyme(mot);
-						System.out.println("Antonyme du mot " + mot);
+						mot.affAntonymes();
 						break;
 					default :
 						System.out.println("Mauvaise information recherchée");
@@ -73,7 +76,7 @@ public class Test {
 			}
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Erreur : " + e);
 		}
 
 	}

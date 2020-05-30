@@ -50,7 +50,9 @@ public class Extraction {
 		Matcher m = p.matcher(content);
 		HashMap<String, String> traductions = new HashMap<String, String>();
 		while (m.find()) {
-			traductions.put(content.substring(m.start(1), m.end(1)), content.substring(m.start(2), m.end(2)));
+			if (!traductions.containsKey(content.substring(m.start(1), m.end(1)))) {
+				traductions.put(content.substring(m.start(1), m.end(1)), content.substring(m.start(2), m.end(2)));
+			}
 		}
 		return traductions;
 	}
@@ -109,20 +111,21 @@ public class Extraction {
 			if (!content.contentEquals("")) {
 			//if (page.title.contentEquals(mot)) {
 				String title = page.title;
+				String filemot = "donnees/" + title + ".pkl";
 				String prononciation = extractionPrononciation(content);
 				HashMap<String, String> traductions = extractionTraductions(content);
 				List<String> categories = extractionCategories(content);
 				List<String> synonymes = extractionSynonymes(content);
 				List<String> antonymes = extractionAntonymes(content);
 				Mot m = new Mot(title, prononciation, traductions, categories, synonymes, antonymes);
-				// On sérialise la donnée :
-				String filemot = "donnees/" + title + ".pkl";
+				// On sérialise la donnée :	
 				ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(filemot));
 				ostream.writeObject(m);
 				ostream.close();
 				// On désérialise (récupère) la donnée : 
 				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(filemot));
-				Mot m2 = (Mot) ois.readObject();
+				Mot m2 = (Mot)ois.readObject();
+				m2.affMot();
 				m2.affPrononciation();
 				ois.close();
 			}
