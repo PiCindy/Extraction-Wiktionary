@@ -9,8 +9,10 @@ cf https://commons.apache.org/proper/commons-cli/apidocs/org/apache/commons/cli/
 	> Arguments : Un ou plusieurs (Au moins un nécessaire)
 		- "prononciation"
 		- "catégorie"
-		- "traduction"
+		- "traduction" > nouvel argument nécessaire : "langue" 
 		- "synonyme"
 		- "antonyme"
+
+
 
 

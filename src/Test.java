@@ -32,7 +32,7 @@ public class Test {
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine cmd = parser.parse(options, args);
-			String mot = cmd.getOptionValue("mot");
+			String mot = cmd.getOptionValue("mot").toLowerCase();
 			String[] infos = cmd.getOptionValues("info");
 			for (String info : infos) {
 				switch(info) {
