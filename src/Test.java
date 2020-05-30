@@ -23,6 +23,15 @@ public class Test {
 							.required()
 							.build();
 		options.addOption(info);
+		
+		Option langues = Option.builder()
+				.longOpt("langues")
+				.desc("Langues recherchées")
+				.hasArgs()
+				.required()
+				.build();
+		options.addOption(langues);
+		
 		return options;
 	}
 		
@@ -45,8 +54,9 @@ public class Test {
 						System.out.println("Catégorie du mot " + mot);
 						break;
 					case "traduction" :
-						//afficherTraduction(mot);
-						System.out.println("Traduction du mot " + mot);
+						String[] langues = cmd.getOptionValues("langue");
+						//afficherTraduction(mot, langues);
+						System.out.println("Traduction du mot " + mot + " dans les langues " + langues);
 						break;
 					case "synonyme" :
 						//afficherSynonyme(mot);

@@ -3,21 +3,43 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import wiktionary_extractor.Page;
-import wiktionary_extractor.PageExtractor;
 
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.List;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import java.io.Serializable;
 
-public class Extraction {
+public class Mot implements Serializable {
 
+	private String ecriture;
+	private String prononciation;
+	private HashMap<String, String> traductions;
+	private List<String> categories;
+	private List<String> synonymes;
+	private List<String> antonymes;
+	
+	public Mot(Page page) throws IOException, XMLStreamException, ParserConfigurationException, TransformerException {
+		page.toXML("page.xml");
+		ecriture = page.title;
+		String content = french(page.content);
+		if (content.contentEquals("")) {
+			System.out.println("Ce mot n'est pas français");
+		}
+		prononciation = extractionPrononciation(content);
+		traductions = extractionTraductions(content);
+		categories = extractionCategories(content);
+		synonymes = extractionSynonymes(content);
+		antonymes = extractionAntonymes(content);
+		
+	}
+	
 	public static String extractionPrononciation(String content) {
 		Pattern p = Pattern.compile("\\{pron\\|([^\\|]*)\\|");
 		Matcher m = p.matcher(content);
@@ -27,7 +49,7 @@ public class Extraction {
 		return "Prononciation introuvable";
 	}
 	
-	public static List<String> extractionCategorie(String content) {
+	public static List<String> extractionCategories(String content) {
 		Pattern p = Pattern.compile("\\{S\\|([^\\||===]*)\\|fr[\\||\\}]");
 		Matcher m = p.matcher(content);
 		ArrayList<String> cat = new ArrayList<String>();
@@ -95,23 +117,24 @@ public class Extraction {
 		return "";
 	}
 	
-	public static void main(String[] args) throws IOException, XMLStreamException, ParserConfigurationException, TransformerException {
-		String filename = "small.xml";
-		//String mot = "homogène";
-		for (Page page : new PageExtractor(filename)) {
-			page.toXML("page.xml");
-			String content = french(page.content);
-			if (!content.contentEquals("")) {
-				System.out.println(page.title + " : " + extractionPrononciation(content) + ", " + extractionCategorie(content) + ", " + extractionSynonymes(content) + ", " + extractionAntonymes(content));
-				System.out.println(extractionTraductions(content));
-			}
-			//System.out.println(page.title);
-			/*if (page.title.contentEquals(mot)) {
-				System.out.println(page.title);
-				System.out.println(content);
-			}*/
-		}
-		
-		
+	public void affPrononciation() {
+		System.out.println(prononciation);
 	}
+	
+	public void affCategories() {
+		System.out.println(categories);
+	}
+	
+	public void affSynonymes() {
+		System.out.println(synonymes);
+	}
+	
+	public void affAntonymes() {
+		System.out.println(antonymes);
+	}
+	
+	public void affTraductions() {
+		System.out.println(traductions);
+	}
+	
 }
