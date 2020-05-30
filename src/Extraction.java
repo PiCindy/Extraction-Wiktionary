@@ -1,4 +1,8 @@
 import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
@@ -27,7 +31,7 @@ public class Extraction {
 		return "Prononciation introuvable";
 	}
 	
-	public static List<String> extractionCategorie(String content) {
+	public static List<String> extractionCategories(String content) {
 		Pattern p = Pattern.compile("\\{S\\|([^\\||===]*)\\|fr[\\||\\}]");
 		Matcher m = p.matcher(content);
 		ArrayList<String> cat = new ArrayList<String>();
@@ -95,15 +99,32 @@ public class Extraction {
 		return "";
 	}
 	
-	public static void main(String[] args) throws IOException, XMLStreamException, ParserConfigurationException, TransformerException {
+	
+	public static void main(String[] args) throws IOException, XMLStreamException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 		String filename = "small.xml";
 		//String mot = "homogène";
 		for (Page page : new PageExtractor(filename)) {
 			page.toXML("page.xml");
 			String content = french(page.content);
 			if (!content.contentEquals("")) {
-				System.out.println(page.title + " : " + extractionPrononciation(content) + ", " + extractionCategorie(content) + ", " + extractionSynonymes(content) + ", " + extractionAntonymes(content));
-				System.out.println(extractionTraductions(content));
+			//if (page.title.contentEquals(mot)) {
+				String title = page.title;
+				String prononciation = extractionPrononciation(content);
+				HashMap<String, String> traductions = extractionTraductions(content);
+				List<String> categories = extractionCategories(content);
+				List<String> synonymes = extractionSynonymes(content);
+				List<String> antonymes = extractionAntonymes(content);
+				Mot m = new Mot(title, prononciation, traductions, categories, synonymes, antonymes);
+				// On sérialise la donnée :
+				String filemot = "donnees/" + title + ".pkl";
+				ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(filemot));
+				ostream.writeObject(m);
+				ostream.close();
+				// On désérialise (récupère) la donnée : 
+				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(filemot));
+				Mot m2 = (Mot) ois.readObject();
+				m2.affPrononciation();
+				ois.close();
 			}
 			//System.out.println(page.title);
 			/*if (page.title.contentEquals(mot)) {
