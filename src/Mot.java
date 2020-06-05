@@ -13,6 +13,9 @@ public class Mot implements Serializable {
 	private List<String> synonymes;
 	private List<String> antonymes;
 	
+	/***
+	 * Constructeur de notre classe
+	 */
 	public Mot(String ecriture, String prononciation, HashMap<String, String> traductions, List<String> categories, List<String> synonymes, List<String> antonymes) {
 		this.ecriture = ecriture;
 		this.prononciation = prononciation;
@@ -22,26 +25,44 @@ public class Mot implements Serializable {
 		this.antonymes = antonymes;
 	}
 	
+	/***
+	 * @return : affiche le mot dans le terminal
+	 */
 	public void affMot() {
 		System.out.println(ecriture);
 	}
 	
+	/***
+	 * @return : affiche la prononciation dans le terminal
+	 */
 	public void affPrononciation() {
 		System.out.println("Prononciation : " + prononciation);
 	}
 	
+	/***
+	 * @return : affiche la catégorie morpho-syntaxique dans le terminal
+	 */
 	public void affCategories() {
 		System.out.println("Catégories morpho-syntaxiques : " + categories);
 	}
 	
+	/***
+	 * @return : affiche les synonymes dans le terminal
+	 */
 	public void affSynonymes() {
 		System.out.println("Synonymes : " + synonymes);
 	}
 	
+	/***
+	 * @return : affiche les antonymes dans le terminal
+	 */
 	public void affAntonymes() {
 		System.out.println("Antonymes : " + antonymes);
 	}
 	
+	/***
+	 * @return : affiche les traductions dans le terminal
+	 */
 	public void affTraductions(String[] langues) {
 		System.out.print("Traductions : ");
 		if (langues == null || langues.length == 0) {

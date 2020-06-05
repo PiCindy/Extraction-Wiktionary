@@ -38,7 +38,10 @@ public class Main {
 		return options;
 	}
 		
-
+	/***
+	 * Paramètre : les arguments donnés par l'utilisateur
+	 * @return : affiche dans le terminal les informations demandées par l'utilisateur
+	 */
 	public static void main (String[] args) throws ParseException, IOException, ClassNotFoundException {
 		Options options = configParameters();
 		CommandLineParser parser = new DefaultParser();

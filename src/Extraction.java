@@ -21,7 +21,11 @@ import java.util.HashMap;
 
 
 public class Extraction {
-
+	
+	/***
+	 * Paramètre : un mot
+	 * @return la prononciation du mot entré en paramètre
+	 */
 	public static String extractionPrononciation(String content) {
 		Pattern p = Pattern.compile("\\{pron\\|([^\\|]*)\\|");
 		Matcher m = p.matcher(content);
@@ -31,6 +35,10 @@ public class Extraction {
 		return "Prononciation introuvable";
 	}
 	
+	/***
+	 * Paramètre : un mot
+	 * @return la liste des catégories morpho-syntaxiques du mot entré en paramètre
+	 */
 	public static List<String> extractionCategories(String content) {
 		Pattern p = Pattern.compile("\\{S\\|([^\\||===]*)\\|fr[\\||\\}]");
 		Matcher m = p.matcher(content);
@@ -45,6 +53,10 @@ public class Extraction {
 		return categories;
 	}
 	
+	/***
+	 * Paramètre : un mot
+	 * @return un dictionnaire contenant la.les traduction.s du mot entré en paramètre
+	 */
 	public static HashMap<String, String> extractionTraductions(String content) {
 		Pattern p = Pattern.compile("\\{trad[+|\\-]*\\|([^\\|]*)\\|([^\\||\\}]*)[\\|\\}]");
 		Matcher m = p.matcher(content);
@@ -57,6 +69,10 @@ public class Extraction {
 		return traductions;
 	}
 	
+	/***
+	 * Paramètre : un mot
+	 * @return la liste des synonymes du mot entré en paramètre
+	 */
 	public static List<String> extractionSynonymes(String content) {
 		// N'extrait qu'un seul synonyme (mauvaise regex) 
 		Pattern p = Pattern.compile("S\\|synonymes[^\\[]*\\[\\[([^\\]]*)\\]\\]", Pattern.DOTALL);
@@ -72,6 +88,10 @@ public class Extraction {
 	    return synonymes;
 	}
 	
+	/***
+	 * Paramètre : un mot
+	 * @return la liste des antonymes du mot entré en paramètre
+	 */
 	public static List<String> extractionAntonymes(String content) {
 		// N'extrait qu'un seul antonyme (mauvaise regex) 
 		Pattern p = Pattern.compile("S\\|antonymes[^\\[]*\\[\\[([^\\]]*)\\]\\]", Pattern.DOTALL);
@@ -87,6 +107,10 @@ public class Extraction {
 	    return antonymes;
 	}
 	
+	/***
+	 * Paramètre : un mot
+	 * @return les informations uniquement en français de la page du mot
+	 */
 	public static String french(String content) {
 		Pattern p2 = Pattern.compile("\\{langue\\|fr\\}");
 		Matcher m1 = p2.matcher(content);
@@ -101,7 +125,12 @@ public class Extraction {
 		return "";
 	}
 	
-	
+	/***
+	 * Paramètre : les options entrés par l'utilisateur
+	 * @return : les informations demandées par l'utilisateur
+	 * 
+	 * Dans cette fonction, nous rendons également les données sérialisables.
+	 */
 	public static void main(String[] args) throws IOException, XMLStreamException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 		String filename = "small.xml";
 		//String mot = "homogène";
